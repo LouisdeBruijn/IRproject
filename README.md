@@ -20,3 +20,5 @@ You should use slides and cover the following aspects of your work:
 – A description of the individual contributions
 The presentation should last 10 minutes, followed by 5 minutes for Q&A. All the members of the group
 should present part of the work.
+
+Project Title: Evaluation of user-based vs. item-based filtering for an anime recommendation system.
