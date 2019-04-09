@@ -56,4 +56,39 @@ for row_idx in range(num_users):
 print("Number of users who did not rate anything: {}".format(num_users_with_no_ratings))
 
 print("Finished normalizing the data... (after {})".format(time.time()-t0))
+
+
+# the whole thing does not fit into memory, so we do 100 rows at a time
+cos_sims = list()
+slice_size = 100
+slice_start = 0
+slice_end = slice_start + slice_size
+
+# while we have not reached the last row
+while slice_end <= matrix.shape[0]:
+    # take the next slice_size rows, and compute the cosine similarity
+    # between those rows and the entire matrix
+    cos_sims.append(cosine(matrix[slice_start:slice_end], matrix))
+    # increment the slice start and end
+    slice_start += slice_size
+    slice_end = slice_start + slice_size
+
+# convert back into a numpy array (appending is faster than concatenating)
+cos_sims = np.concatenate(cos_sims)
+
+# we end up with a numpy matrix of size (num_users, num_users) where each row
+# contains the results of the cosine similarity between that user and each other
+# user (it will always contain the value 1 for the cosine similarity between it
+# and itself)
+
+# example:
+# m == matrix of size (5, 2)
+# c == cosine(m) == matrix of size (5, 5)
+# c[0] == similarities between m[0] and m[:]
+
+print(f"Finished computing similarities... (after {time.time()-t0})")
+
 np.save('utility_matrix', matrix)
+np.save('similarities', cos_sims)
+
+print(f"Finished saving the results to file... (after {time.time()-t0})")
