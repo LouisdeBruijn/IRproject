@@ -31,7 +31,7 @@ with open('data/rating.csv') as csv_file:
             show_number += 1
         matrix[user_id - 1][anime_id - 1] = rating
 
-print(f"Finished reading the data... (after {time.time()-t0})")
+print("Finished reading the data... (after {})".format(time.time()-t0))
 
 # checks if the value is a valid rating
 def is_rating(value):
@@ -53,19 +53,7 @@ for row_idx in range(num_users):
                 matrix[row_idx][col_idx] == 0
     else:
         num_users_with_no_ratings += 1
-print(f"Number of users who did not rate anything: {num_users_with_no_ratings}")
+print("Number of users who did not rate anything: {}".format(num_users_with_no_ratings))
 
-print(f"Finished normalizing the data... (after {time.time()-t0})")
-
-# this calculates the similarity of each row with each row,
-# resulting in a matrix of shape (num_users, num_users) where
-# each row contains the similarity between the user that
-# corresponds to that row and every other user (there will always
-# be one element of that row with the value 1 because that is
-# the similarity between that user and itself)
-cos_sims = cosine(matrix)
-
-print(f"Finished computing similarities... (after {time.time()-t0})")
-
+print("Finished normalizing the data... (after {})".format(time.time()-t0))
 np.save('utility_matrix', matrix)
-np.save('similarities', cos_sims)
