@@ -3,6 +3,8 @@ import csv
 import numpy as np
 from operator import itemgetter
 
+# TODO: hide lockbox data and split train/test data
+# TODO: adapt this to work with new data set
 
 class Recommender:
     def __init__(self, verbose=True, parse_user_sims=True, parse_VIP_sims=True):
@@ -80,17 +82,6 @@ class Recommender:
                 self.similar_users[row[0]].append((row[1], row[2]))
 
     '''
-    Function to retrieve VIP similarities.
-    '''
-    def get_VIP_similarities(self):
-        with open('Twitter2014/popular_similarity.csv') as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=' ')
-            for row in csv_reader:
-                if row[0] not in self.similar_VIPs:
-                    self.similar_VIPs[row[0]] = list()
-                self.similar_VIPs[row[0]].append((row[1], row[2]))
-
-    '''
     Recommend a VIP based on user similarities.
     '''
     def recommend_user_based(self, user, solution=False, **kwargs):
@@ -120,61 +111,6 @@ class Recommender:
                 recommendations.append(name)
                 if name == solution:
                     guess_correct = True
-        return guess_correct, recommendations
-
-    '''
-    Recommend a VIP based on VIP similarities.
-    This method is far less effective than user based recommendation, so no
-    optimization efforts were made.
-    '''
-    def recommend_VIP_based(self, user, solution=False, **kwargs):
-        if "num_s_VIPs" not in kwargs:
-            kwargs["num_s_VIPs"] = 5
-        if "s_weight" not in kwargs:
-            kwargs["s_weight"] = 1
-        if "p_weight" not in kwargs:
-            kwargs["p_weight"] = 1
-        # Get the user vector
-        user_vector = self.matrix[self.user_indices[user]]
-        # Find the VIPs that the user is following
-        VIPs_followed = list()
-        for idx, is_following in enumerate(user_vector):
-            if is_following:
-                VIPs_followed.append((self.VIP_names[idx], idx))
-        # Find the VIPs similar to the VIPs the user is following
-        similar_VIPs = list()
-        for VIP_name, VIP_idx in VIPs_followed:
-            if VIP_name in self.similar_VIPs:
-                similar_VIPs += self.similar_VIPs[VIP_name][:kwargs["num_s_VIPs"]]
-            else:
-                #print(f"VIP {VIP_name} not in similar-list?")
-                pass
-        # Take weighted average of VIP_similarity and VIP_popularity
-        weighted_VIPs = list()
-        for VIP_name, similarity in similar_VIPs:
-            if VIP_name in self.VIP_indices:
-                weights = np.array([kwargs["s_weight"], kwargs["p_weight"]])
-                w_sim_value = float(similarity) * weights[0]
-                w_pop_value = self.VIP_pops[self.VIP_indices[VIP_name]] * weights[1]
-                values = np.array([w_sim_value, w_pop_value])
-                w_res = np.average(values, weights=weights)
-                weighted_VIPs.append((VIP_name, w_res))
-        # Sort possible suggestions by weighted similarity and recommend top ten
-        weighted_VIPs.sort(key=itemgetter(1), reverse=True)
-        recommendations = list()
-        guess_correct = False
-        for VIP_name, w_similarity in weighted_VIPs:
-            if len(recommendations) == 10:
-                break
-            if VIP_name in self.VIP_indices:
-                # TODO: remove the VIPs the user is already following much earlier
-                if not user_vector[self.VIP_indices[VIP_name]]:
-                    recommendations.append(VIP_name)
-                    if VIP_name == solution:
-                        guess_correct = True
-            else:
-                #print(f"{VIP_name} not in VIP_indices?")
-                pass
         return guess_correct, recommendations
 
 

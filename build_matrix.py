@@ -4,16 +4,20 @@ import csv, time
 
 # constants
 t0 = time.time()
-num_users = 7914
-num_shows = 2746
-path_to_data = 'ratings_250.csv'
-#using_subset = True
+num_users = 73516
+num_shows = 12294
+path_to_data = 'data/rating.csv'
+using_subset = True
 method = "item_based"
 
-# using the subset of the data
-if method == "using_subset":
-    num_users = 15
-    path_to_data = 'ratings_250.csv'
+# using the subset of the data with a minimum of 250 ratings
+# per show and per user. this uses about half the original data
+if using_subset:
+    num_users = 7914
+    num_shows = 2746
+    path_to_data = 'data/ratings_250.csv'
+    # num_users = 15
+    # path_to_data = 'data/rating_subset.csv'
 
 # switch these variables based on the method so that we can 
 # re-use the same algorithm to calculate similarities.
@@ -62,7 +66,7 @@ def is_rating(value):
         return False
 
 # normalize ratings for each row in utility matrix
-num_users_with_no_ratings = 0
+num_elements_with_no_ratings = 0
 for row_idx in range(num_rows):
     # only valid ratings should be used to calculate avg_rating
     ratings = list(filter(is_rating, matrix[row_idx]))
@@ -76,15 +80,15 @@ for row_idx in range(num_rows):
             else:
                 matrix[row_idx][col_idx] = 0
     else:
-        num_users_with_no_ratings += 1
+        num_elements_with_no_ratings += 1
 
-print("Number of users/shows who did not rate anything / did not get rated: {}".format(num_users_with_no_ratings))
+print("Number of users/shows who did not rate anything / did not get rated: {}".format(num_elements_with_no_ratings))
 
 print("Finished normalizing the data... (after {})".format(time.time()-t0))
 
 if method == "user_based":
-    np.save('user_utility_matrix', matrix)
+    np.save('data/user_utility_matrix', matrix)
 elif method == "item_based":
-    np.save('item_utility_matrix', matrix)
+    np.save('data/item_utility_matrix', matrix)
 
 print("Finished saving the results to file... (after {})".format(time.time()-t0))
