@@ -3,9 +3,13 @@ from sklearn.metrics.pairwise import cosine_similarity as cosine
 import time
 
 t0 = time.time()
+method = "user_based"
 
 # import the utility matrix computed before:
-matrix = np.load('utility_matrix.npy')
+if method == "user_based":
+    matrix = np.load('user_utility_matrix.npy')
+elif method == "item_based":
+    matrix = np.load('item_utility_matrix.npy')
 
 print(f"Finished loading the matrix... (after {time.time()-t0})")
 
@@ -20,6 +24,9 @@ slice2_start = 0
 slice2_end = slice2_start + slice_size
 
 final_cos = list()
+
+# TODO: Compute this differently / more efficiently, also because
+# the indices get mixed up when doing it this way.
 
 # while we have not reached the last row
 while slice_end <= matrix.shape[0]:
