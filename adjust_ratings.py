@@ -61,8 +61,14 @@ with open('data/rating.csv') as csv_file:
 		for user, rating in user_tup:
 			final_list.append([user, anime, rating])
 	print(len(final_list))
-	#for i in final_list:
-	#	print(i)
+	length = len(final_list)
+	ratings = 0
+	for i in final_list:
+		ratings += int(i[2])
+	print(ratings/length)
+	with open('ratings_250.csv', 'w') as writeFile:
+		writer = csv.writer(writeFile)
+		writer.writerows(sorted(final_list))
 
 
 
