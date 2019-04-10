@@ -81,6 +81,9 @@ print("Number of users/shows who did not rate anything / did not get rated: {}".
 
 print("Finished normalizing the data... (after {})".format(time.time()-t0))
 
-np.save('utility_matrix', matrix)
+if method == "user_based":
+    np.save('user_utility_matrix', matrix)
+elif method == "item_based":
+    np.save('item_utility_matrix', matrix)
 
 print(f"Finished saving the results to file... (after {time.time()-t0})")
