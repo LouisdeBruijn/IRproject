@@ -4,8 +4,8 @@ import time
 
 # constants
 t0 = time.time()
-method = "TESTING"
-slice_size = 1
+method = "user_based"
+slice_size = 100
 
 # import the utility matrix computed before:
 if method == "user_based":
@@ -38,8 +38,8 @@ while slice_end <= matrix.shape[0]:
         # take the next slice_size rows, and compute the cosine similarity
         # between those rows and the entire matrix
         cos_sims.append(cosine(matrix[slice_start:slice_end], matrix[slice2_start:slice2_end]))
-        print("length of cos sims: ", len(cos_sims))
-        print("shape: ", cos_sims[0].shape)
+        #print("length of cos sims: ", len(cos_sims))
+        #print("shape: ", cos_sims[0].shape)
         # increment the slice start and end
         slice2_start += slice_size
         slice2_end = slice2_start + slice_size
