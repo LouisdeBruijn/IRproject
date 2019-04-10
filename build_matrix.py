@@ -8,7 +8,7 @@ num_users = 73516
 num_shows = 12294
 path_to_data = 'data/rating.csv'
 using_subset = True
-method = "item_based"
+method = "user_based"
 
 # using the subset of the data with a minimum of 250 ratings
 # per show and per user. this uses about half the original data
@@ -62,8 +62,7 @@ print("Finished reading the data... (after {})".format(time.time()-t0))
 
 # checks if the value is a valid rating
 def is_rating(value):
-    if value == -1:
-        return False
+    return not value == -1
 
 # normalize ratings for each row in utility matrix
 num_elements_with_no_ratings = 0

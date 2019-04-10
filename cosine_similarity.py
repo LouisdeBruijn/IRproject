@@ -5,7 +5,7 @@ import time
 
 # constants
 t0 = time.time()
-method = "item_based"
+method = "user_based"
 
 # import the utility matrix computed before:
 if method == "user_based":
