@@ -58,7 +58,8 @@ print("Finished reading the data... (after {})".format(time.time()-t0))
 
 # checks if the value is a valid rating
 def is_rating(value):
-    return not value == -1
+    if value == -1:
+        return False
 
 # normalize ratings for each row in utility matrix
 num_users_with_no_ratings = 0
