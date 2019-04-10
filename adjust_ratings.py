@@ -20,6 +20,7 @@ with open('data/rating.csv') as csv_file:
 	print(line_count)
 	# new dic with users that have at least the counter boundary amount of ratings
 	at_least_five_ratings_user = {}
+	user_id = 1
 	for user, tuplist in dic.items():
 		counter = 0
 		for anime, rating in tuplist:
@@ -28,9 +29,11 @@ with open('data/rating.csv') as csv_file:
 			else: 
 				continue
 		if counter >= 251:
-			at_least_five_ratings_user[user] = tuplist
+			at_least_five_ratings_user[user_id] = tuplist
+			user_id += 1
 		else:
 			continue
+	print(len(at_least_five_ratings_user))
 	# invert the dict to look at the amount of ratings per show of users with at least the counter amount of views
 	invert_to_anime_id = {}
 	for user, tuplist in at_least_five_ratings_user.items():
@@ -54,6 +57,7 @@ with open('data/rating.csv') as csv_file:
 			at_least_five_ratings_anime[anime] = tuplist
 		else:
 			continue
+	print(len(at_least_five_ratings_anime))
 	print("we here")	
 	# set back to original format
 	final_list = []
