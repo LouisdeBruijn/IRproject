@@ -5,15 +5,19 @@ import csv, time
 # constants
 t0 = time.time()
 num_users = 73516
-num_users = 15
 num_shows = 12294
+path_to_data = 'data/rating.csv'
+
+# using the subset of the data
+num_users = 15
+path_to_data = 'data/rating_subset.csv'
 
 # initialize utility matrix with -1 as default value
 matrix = np.full((num_users, num_shows), -1, dtype=int)
 
 # read data, and fill in the utiliy matrix
 # watched but not rated is treated the same as not watched
-with open('data/rating_subset.csv') as csv_file:
+with open(path_to_data) as csv_file:
     ratings = csv.reader(csv_file, delimiter=',')
     next(ratings, None) # skip the header
     # anime show ids dont correspond to idx numbers, they are unique
