@@ -2,20 +2,22 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity as cosine
 import time
 
+t0 = time.time()
+
 # import the utility matrix computed before:
 matrix = np.load('utility_matrix.npy')
-print("we here")
-t0 = time.time()
-# the whole thing does not fit into memory, so we do 100 rows at a time
 
+print(f"Finished loading the matrix... (after {time.time()-t0})")
 
-slice_size = 100
+# the whole thing does not fit into memory, so we do 
+# slice_size rows at a time
+slice_size = 1
+
 slice_start = 0
 slice_end = slice_start + slice_size
 
-slice2_size = 100
 slice2_start = 0
-slice2_end = slice2_start + slice2_size
+slice2_end = slice2_start + slice_size
 
 final_cos = list()
 
@@ -29,21 +31,22 @@ while slice_end <= matrix.shape[0]:
         print("length of cos sims: ", len(cos_sims))
         print("shape: ", cos_sims[0].shape)
         # increment the slice start and end
-        slice2_start += slice2_size
-        slice2_end = slice2_start + slice2_size
-        #print("Time to compute one batch..... ({})".format(time.time()-t0))
-    slice2_size = 100
+        slice2_start += slice_size
+        slice2_end = slice2_start + slice_size
+    # increment the slice start and end
     slice2_start = 0
-    slice2_end = slice2_start + slice2_size    
+    slice2_end = slice2_start + slice_size
+    # concatenate list into one long row
     final_cos.append(np.concatenate(cos_sims, axis=1))
     print("length of final cos: ",len(final_cos))
+    # reset inner loop iterators
     slice_start += slice_size
     slice_end = slice_start + slice_size
 
 # convert back into a numpy array (appending is faster than concatenating)
 cos_sims = np.concatenate(final_cos)
 
-
 print("Finished computing similarities... (after {})".format(time.time()-t0))
+print("Cosine similarity matrix shape: ", cos_sims.shape)
+
 np.save('similarities', cos_sims)
-print(cos_sims.shape)
