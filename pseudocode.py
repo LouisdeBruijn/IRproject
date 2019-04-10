@@ -5,6 +5,7 @@ import csv, time
 # constants
 t0 = time.time()
 num_users = 73516
+num_users = 15
 num_shows = 12294
 
 # initialize utility matrix with -1 as default value
@@ -12,7 +13,7 @@ matrix = np.full((num_users, num_shows), -1, dtype=int)
 
 # read data, and fill in the utiliy matrix
 # watched but not rated is treated the same as not watched
-with open('data/rating.csv') as csv_file:
+with open('data/rating_subset.csv') as csv_file:
     ratings = csv.reader(csv_file, delimiter=',')
     next(ratings, None) # skip the header
     # anime show ids dont correspond to idx numbers, they are unique
@@ -50,14 +51,15 @@ for row_idx in range(num_users):
             if is_rating(matrix[row_idx][col_idx]):
                 matrix[row_idx][col_idx] -= avg_rating
             else:
-                matrix[row_idx][col_idx] == 0
+                matrix[row_idx][col_idx] = 0
     else:
         num_users_with_no_ratings += 1
+
 print("Number of users who did not rate anything: {}".format(num_users_with_no_ratings))
 
 print("Finished normalizing the data... (after {})".format(time.time()-t0))
 
-
+exit()
 # the whole thing does not fit into memory, so we do 100 rows at a time
 cos_sims = list()
 slice_size = 100
