@@ -1,3 +1,6 @@
+# Huge numpy files
+*.npy
+
 # Vim files
 *.swp
 tags
