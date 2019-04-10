@@ -1,22 +1,23 @@
-import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity as cosine
+import numpy as np
 import time
 
+# constants
 t0 = time.time()
-method = "user_based"
+method = "TESTING"
+slice_size = 1
 
 # import the utility matrix computed before:
 if method == "user_based":
     matrix = np.load('user_utility_matrix.npy')
 elif method == "item_based":
     matrix = np.load('item_utility_matrix.npy')
+elif method == "TESTING":
+    matrix = np.random.rand(10, 10)
 
 print(f"Finished loading the matrix... (after {time.time()-t0})")
 
-# the whole thing does not fit into memory, so we do 
-# slice_size rows at a time
-slice_size = 1
-
+# the whole thing does not fit into memory, so we do it row by row
 slice_start = 0
 slice_end = slice_start + slice_size
 
@@ -25,8 +26,10 @@ slice2_end = slice2_start + slice_size
 
 final_cos = list()
 
-# TODO: Compute this differently / more efficiently, also because
-# the indices get mixed up when doing it this way.
+# TODO: Compute this differently / more efficiently
+
+# TODO: OR figure out how the indices between matrix rows and
+# cos_sims rows relate
 
 # while we have not reached the last row
 while slice_end <= matrix.shape[0]:
@@ -56,4 +59,5 @@ cos_sims = np.concatenate(final_cos)
 print("Finished computing similarities... (after {})".format(time.time()-t0))
 print("Cosine similarity matrix shape: ", cos_sims.shape)
 
-np.save('similarities', cos_sims)
+if method != "TESTING":
+    np.save('similarities', cos_sims)
