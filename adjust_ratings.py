@@ -3,6 +3,7 @@ import csv
 with open('data/rating.csv') as csv_file:
 	ratings = csv.reader(csv_file, delimiter=',')
 	next(ratings, None) # skip the header
+	# build dic for user and which shows they watched
 	dic = {}
 	line_count = 0
 	for line in ratings:
@@ -17,6 +18,7 @@ with open('data/rating.csv') as csv_file:
 			val.append(tuple((anime, rating)))
 			dic[user] = val
 	print(line_count)
+	# new dic with users that have at least the counter boundary amount of ratings
 	at_least_five_ratings_user = {}
 	for user, tuplist in dic.items():
 		counter = 0
@@ -29,6 +31,7 @@ with open('data/rating.csv') as csv_file:
 			at_least_five_ratings_user[user] = tuplist
 		else:
 			continue
+	# invert the dict to look at the amount of ratings per show of users with at least the counter amount of views
 	invert_to_anime_id = {}
 	for user, tuplist in at_least_five_ratings_user.items():
 		for anime_id, rating in tuplist:
@@ -38,6 +41,7 @@ with open('data/rating.csv') as csv_file:
 				val = invert_to_anime_id[anime_id]
 				val.append(tuple((user, rating)))
 				invert_to_anime_id[anime_id] = val
+	# filter out shows that have less than the counter amount of views
 	at_least_five_ratings_anime = {}
 	for anime, tuplist in invert_to_anime_id.items():
 		counter = 0
