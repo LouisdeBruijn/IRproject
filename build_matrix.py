@@ -4,16 +4,16 @@ import csv, time
 
 # constants
 t0 = time.time()
-num_users = 73516
-num_shows = 12294
-path_to_data = 'data/rating.csv'
-using_subset = True
-method = "user_based"
+num_users = 7914
+num_shows = 2746
+path_to_data = 'ratings_250.csv'
+#using_subset = True
+method = "item_based"
 
 # using the subset of the data
-if using_subset:
+if method == "using_subset":
     num_users = 15
-    path_to_data = 'data/rating_subset.csv'
+    path_to_data = 'ratings_250.csv'
 
 # switch these variables based on the method so that we can 
 # re-use the same algorithm to calculate similarities.
@@ -33,7 +33,7 @@ matrix = np.full(matrix_dimensions, -1, dtype=int)
 # watched but not rated is treated the same as not watched
 with open(path_to_data) as csv_file:
     ratings = csv.reader(csv_file, delimiter=',')
-    next(ratings, None) # skip the header
+    #next(ratings, None) # skip the header
     # anime show ids dont correspond to idx numbers, they are unique
     # id numbers from the website itself, so we have to map them to 
     # indices with a dictionary. To find the anime_id of col_idx, do
@@ -86,4 +86,4 @@ if method == "user_based":
 elif method == "item_based":
     np.save('item_utility_matrix', matrix)
 
-print(f"Finished saving the results to file... (after {time.time()-t0})")
+print("Finished saving the results to file... (after {})".format(time.time()-t0))
