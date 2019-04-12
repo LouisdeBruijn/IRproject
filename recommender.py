@@ -33,7 +33,7 @@ def recommend(utility_matrix, element_id, N=10):
 	# return the vector to do some testing
 	return predicted_ratings
 
-# returns the root mean square error (RMSE) between two vectors
+# returns the mean square error (MSE) between two vectors
 def MSE(vector1, vector2):
 	return np.square(vector1 - vector2).mean()
 
@@ -67,8 +67,10 @@ RMSE_item = math.sqrt(sum(item_errors))
 
 print("Total RMSE for user_based: ", RMSE_user)
 print("Total RMSE for item_based: ", RMSE_item)
-print("Percentage of RMSE over the user_based data: ", round((100/len(user_utility)*RMSE_user),2), "%")
-print("Percentage of RMSE over the item_based data: ", round((100/len(item_utility)*RMSE_item),2), "%")
+print("Total MSE for user_based: ", sum(user_errors))
+print("Total MSE for item_based: ", sum(item_errors))
+print("Percentage of MSE over the user_based data: ", round((100/len(user_utility)*sum(user_errors)),2), "%")
+print("Percentage of MSE over the item_based data: ", round((100/len(item_utility)*sum(item_errors)),2), "%")
 
 
 
