@@ -37,9 +37,11 @@ def recommend(utility_matrix, element_id, N=10):
 def RMSE(vector1, vector2):
 	return math.sqrt(np.square(vector1 - vector2).mean())
 
+
 # run num_tests tests and return the MSE error values
 def test(utility_matrix, num_tests=None):
 	errors = list()
+	
 	# if we dont provide a number of tests, test all rows
 	if num_tests is None:
 		num_tests = utility_matrix.shape[0]
@@ -55,6 +57,7 @@ def test(utility_matrix, num_tests=None):
 			target_vector = utility_matrix[:, test_id]
 		# compute MSE
 		errors.append(MSE(predict_vector, target_vector))
+		
 	return errors
 
 user_errors = test(user_utility)
@@ -62,7 +65,8 @@ item_errors = test(item_utility)
 
 print("Total MSE for user_based: ", sum(user_errors))
 print("Total MSE for item_based: ", sum(item_errors))
-
+print("Percentage of MSE over the user_based data: ", round((100/len(user_utility)*sum(user_errors)),2), "%")
+print("Percentage of MSE over the item_based data: ", round((100/len(item_utility)*sum(item_errors)),2), "%")
 
 
 #highest_rating = predict_vector.argsort()[::-1][0]
