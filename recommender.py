@@ -1,5 +1,6 @@
 import time, csv
 import numpy as np
+import math
 
 similarities = np.load('data/similarities.npy')
 user_utility = np.load('data/user_utility_matrix.npy')
@@ -32,9 +33,9 @@ def recommend(utility_matrix, element_id, N=10):
 	# return the vector to do some testing
 	return predicted_ratings
 
-# returns the mean square error between two vectors
-def MSE(vector1, vector2):
-	return np.square(vector1 - vector2).mean()
+# returns the root mean square error (RMSE) between two vectors
+def RMSE(vector1, vector2):
+	return math.sqrt(np.square(vector1 - vector2).mean())
 
 # run num_tests tests and return the MSE error values
 def test(utility_matrix, num_tests=None):
