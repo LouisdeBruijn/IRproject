@@ -37,6 +37,7 @@ def recommend(utility_matrix, element_id, N=10):
 def MSE(vector1, vector2):
 	return np.square(vector1 - vector2).mean()
 
+print(MSE(np.array([5, 3]), np.array([4.8, 2.6])))
 
 # run num_tests tests and return the RMSE error values
 def test(utility_matrix, num_tests=None):
@@ -64,6 +65,10 @@ user_errors = test(user_utility)
 item_errors = test(item_utility)
 RMSE_user = math.sqrt(sum(user_errors))
 RMSE_item = math.sqrt(sum(item_errors))
+RMSE_average_user = math.sqrt(sum(user_errors))/len(user_utility)
+RMSE_average_item = math.sqrt(sum(item_errors))/len(item_utility)
+
+
 
 print("Total RMSE for user_based: ", RMSE_user)
 print("Total RMSE for item_based: ", RMSE_item)
@@ -74,7 +79,7 @@ print("Percentage of MSE over the item_based data: ", round((100/len(item_utilit
 
 
 
-#highest_rating = predict_vector.argsort()[::-1][0]
-#print("Highest rating by generic similar user: ", predict_vector[highest_rating])
-#print("This corresponds to the show_id: ", highest_rating)
+# #highest_rating = predict_vector.argsort()[::-1][0]
+# #print("Highest rating by generic similar user: ", predict_vector[highest_rating])
+# #print("This corresponds to the show_id: ", highest_rating)
 
