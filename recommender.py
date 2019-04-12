@@ -79,12 +79,12 @@ def test(utility_matrix, num_tests=None):
 	return errors
 
 
-user_errors = test(user_utility)
-item_errors = test(item_utility)
+user_errors = test(user_util)
+item_errors = test(item_util)
 RMSE_user = math.sqrt(sum(user_errors))
 RMSE_item = math.sqrt(sum(item_errors))
-RMSE_average_user = math.sqrt(sum(user_errors))/len(user_utility)
-RMSE_average_item = math.sqrt(sum(item_errors))/len(item_utility)
+RMSE_average_user = math.sqrt(sum(user_errors))/len(user_util)
+RMSE_average_item = math.sqrt(sum(item_errors))/len(item_util)
 
 print(MSE(np.array([5, 3]), np.array([4.8, 2.6])))
 
@@ -92,7 +92,7 @@ print("Total RMSE for user_based: ", RMSE_user)
 print("Total RMSE for item_based: ", RMSE_item)
 print("Total MSE for user_based: ", sum(user_errors))
 print("Total MSE for item_based: ", sum(item_errors))
-print("Percentage of MSE over the user_based data: ", round((100/len(user_utility)*sum(user_errors)),2), "%")
-print("Percentage of MSE over the item_based data: ", round((100/len(item_utility)*sum(item_errors)),2), "%")
+print("Percentage of MSE over the user_based data: ", round((100/len(user_util)*sum(user_errors)),2), "%")
+print("Percentage of MSE over the item_based data: ", round((100/len(item_util)*sum(item_errors)),2), "%")
 
 print(f"Finished predicting and testing... (after {time.time()-t0})")
