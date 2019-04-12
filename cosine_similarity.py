@@ -33,5 +33,7 @@ if method == "TESTING":
 print("Finished computing similarities... (after {})".format(time.time()-t0))
 print("Cosine similarity matrix shape: ", cos_sims.shape)
 
-if method != "TESTING":
-    np.save('data/similarities', cos_sims)
+if method == "user_based":
+    np.save('data/user_similarities', cos_sims)
+elif method == "item_based":
+    np.save('data/item_similarities', cos_sims)
